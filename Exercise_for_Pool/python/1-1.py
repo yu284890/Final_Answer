@@ -11,16 +11,18 @@ soup = BeautifulSoup(res.text, 'html.parser')
 shop_list = soup.find_all('a', {'class': 'style_titleLink__oiHVJ'})
 
 #50レコード以上のurlを取得できるまでページを移動し、追加
-i=1
 while len(shop_list)<50:
-    i+=1
-    URL = 'https://r.gnavi.co.jp/area/aream7303/rs/'+'?ps=i/'
+    next_url = soup.find('ul', {'class': 'style_pages__Y9bbR'}).find_all('li')[9].find('a').get('href')
+    URL = 'https://r.gnavi.co.jp'+next_url
+    
+    res = requests.get(URL)
+    soup = BeautifulSoup(res.text, 'html.parser')
     ad_list = soup.find_all('a', {'class': 'style_titleLink__oiHVJ'})
     shop_list.extend(ad_list)
 
 #50レコード分の情報を取得
 
-data = [] #データ格納用
+
 
 for i in range(50):
     shop_url = shop_list[i].get('href')
@@ -70,3 +72,4 @@ df = pd.DataFrame(data,columns =['店舗名', '電話番号', '都道府県', '�
 
 #csvに出力
 df.to_csv('1-1.csv',encoding='cp932')
+data = []
