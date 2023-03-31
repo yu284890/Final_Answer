@@ -92,11 +92,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Float, DateTime
 
 DATABASE = 'mysql://%s:%s@%s/%s?charset=utf8mb4' % (
-    "root",  #ユーザー「docker」の
-    "mysql",  #パスワード「docker」で    
+    "root",  #ユーザー
+    "mysql",  #パスワード    
     "mysql3",  #MySQLサーバ(http:\/\/127.0.0.1:3306)に接続し
     #dockerの場合、IPはコンテナ名
-    "SCHOOL", #データベース「test_db」にアクセスします
+    "SCHOOL", 
 )
 
 ENGINE = create_engine(
@@ -112,26 +112,7 @@ session = scoped_session(
     )
 )
 
-#以下に書いていくDBモデルのベース部分を作ります
-Base = declarative_base()
-Base.query = session.query_property()
 
-#DBとデータをやり取りするためのモデルを定義
-class User(Base):
-    __tablename__ = 'users'
-    id = Column('id', Integer, primary_key = True)
-    name = Column('name', String(200))
-    age = Column('age', Integer)
-    email = Column('email', String(100))
-
-#このPythonスクリプトを実行したとき、テーブルを一旦削除して新規作成する
-def main(args):
-    Base.metadata.drop_all(bind=ENGINE)
-    Base.metadata.create_all(bind=ENGINE)
-
-#このファイルを直接実行したとき、mainメソッドでテーブルを作成する
-if __name__ == "__main__":
-    main(sys.argv)
 
 
 df.to_sql('datas', ENGINE, index=False,  

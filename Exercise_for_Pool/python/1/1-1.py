@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 import pandas as pd
+import time
 
 URL = 'https://r.gnavi.co.jp/area/aream7303/rs/'
 
@@ -25,6 +26,7 @@ while len(shop_list)<50:
 
 
 for i in range(50):
+    time.sleep(3)
     shop_url = shop_list[i].get('href')
     res_shop = requests.get(shop_url)
     item = BeautifulSoup(res_shop.content, 'html.parser')
