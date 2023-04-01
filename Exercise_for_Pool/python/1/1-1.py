@@ -6,8 +6,13 @@ import time
 
 URL = 'https://r.gnavi.co.jp/area/aream7303/rs/'
 
+user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
+header = {
+    'User-Agent': user_agent
+}
+
 # urlの取得
-res = requests.get(URL)
+res = requests.get(URL, headers=header)
 soup = BeautifulSoup(res.text, 'html.parser')
 shop_list = soup.find_all('a', {'class': 'style_titleLink__oiHVJ'})
 data = []
@@ -17,7 +22,7 @@ while len(shop_list)<50:
     next_url = soup.find('ul', {'class': 'style_pages__Y9bbR'}).find_all('li')[9].find('a').get('href')
     URL = 'https://r.gnavi.co.jp'+next_url
     
-    res = requests.get(URL)
+    res = requests.get(URL, headers=header)
     soup = BeautifulSoup(res.text, 'html.parser')
     ad_list = soup.find_all('a', {'class': 'style_titleLink__oiHVJ'})
     shop_list.extend(ad_list)
@@ -29,7 +34,7 @@ while len(shop_list)<50:
 for i in range(50):
     time.sleep(3)
     shop_url = shop_list[i].get('href')
-    res_shop = requests.get(shop_url)
+    res_shop = requests.get(shop_url, headers=header)
     item = BeautifulSoup(res_shop.content, 'html.parser')
     title = item.find('h1',{'class':'shop-info__name'}).get_text()
     #店舗名

@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 
 
 
-
+user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
 
 
 
@@ -30,6 +30,7 @@ def grunavi(URL):
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-extensions')
+    options.add_argument('--user-agent=' + user_agent)
     browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',options=options)
     sleep(3)
     browser.get(URL)
@@ -122,6 +123,7 @@ while len(data)<50:
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-extensions')
+    options.add_argument('--user-agent=' + user_agent)
     browser = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',options=options)
     grunavi(URL)
     sleep(3)
