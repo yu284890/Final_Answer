@@ -10,6 +10,7 @@ URL = 'https://r.gnavi.co.jp/area/aream7303/rs/'
 res = requests.get(URL)
 soup = BeautifulSoup(res.text, 'html.parser')
 shop_list = soup.find_all('a', {'class': 'style_titleLink__oiHVJ'})
+data = []
 
 #50レコード以上のurlを取得できるまでページを移動し、追加
 while len(shop_list)<50:
@@ -55,6 +56,7 @@ for i in range(50):
         
     #店舗のホームページを記載してある店とそうでない店の区別
     #もしあれば、そのホームページがSSLかどうかを判断
+    
     if item.select_one('a.sv-of'):
         page = item.find('a', {'title': 'オフィシャルページ'}).get('href')
         if page.startswith('https'):
@@ -67,11 +69,10 @@ for i in range(50):
         page =None
         SSL = False
 #データの格納
-    data.append([title, phone, prefecture, municipality, addres, build, page, SSL])
+    data.append([title,mail, phone, prefecture, municipality, addres, build, page, SSL])
 
 #データフレーム作成
 df = pd.DataFrame(data,columns =['店舗名', '電話番号', '都道府県', '区市町村', '番地', '建物名', 'URL', 'SSL'])
 
 #csvに出力
-df.to_csv('1-1.csv',encoding='cp932')
-data = []
+df.to_csv('1-1.csv',encoding='cp932',index = False)
