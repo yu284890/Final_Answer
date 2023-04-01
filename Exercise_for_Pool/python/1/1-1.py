@@ -69,7 +69,7 @@ for i in range(50):
         page =None
         SSL = False
 #データの格納
-    data.append([title,mail, phone, prefecture, municipality, addres, build, page, SSL])
+    data.append([title,phone, prefecture, municipality, addres, build, page, SSL])
 
 #データフレーム作成
 df = pd.DataFrame(data,columns =['店舗名', '電話番号', '都道府県', '区市町村', '番地', '建物名', 'URL', 'SSL'])
